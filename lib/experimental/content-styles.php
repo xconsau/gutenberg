@@ -8,10 +8,6 @@ function gutenberg_resolve_assets_override() {
 
 	$script_handles = array();
 	$style_handles  = array(
-        // Until #37466, we can't specifically add them as editor styles yet,
-        // so we must hard-code it here.
-		'wp-block-editor-content',
-		'wp-block-library',
 		'wp-edit-blocks',
 	);
 

@@ -265,9 +265,7 @@ function gutenberg_register_packages_styles( $styles ) {
 		$styles,
 		'wp-block-editor',
 		gutenberg_url( 'build/block-editor/style.css' ),
-		// Until #37466, we can't specifically add them as editor styles yet,
-		// so we must hard-code it here as a dependency.
-		array( 'wp-components', 'wp-block-editor-content' ),
+		array( 'wp-components' ),
 		$version
 	);
 	$styles->add_data( 'wp-block-editor', 'rtl', 'replace' );
@@ -326,6 +324,9 @@ function gutenberg_register_packages_styles( $styles ) {
 		'wp-reset-editor-styles',
 		'wp-block-library',
 		'wp-reusable-blocks',
+		// Until #37466, we can't specifically add them as editor styles yet,
+		// so we must hard-code it here as a dependency.
+		'wp-block-editor-content',
 	);
 
 	// Only load the default layout and margin styles for themes without theme.json file.
