@@ -1,7 +1,12 @@
 <?php
+/**
+ * Filter to override the default content assests from core.
+ *
+ * @package gutenberg
+ */
 
 /**
- * Sets the content styles for the block editor.
+ * Sets the content assets for the block editor.
  */
 function gutenberg_resolve_assets_override() {
 	global $pagenow;
