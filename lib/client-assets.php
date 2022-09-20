@@ -251,12 +251,23 @@ function gutenberg_register_packages_styles( $styles ) {
 	// else (for development or test) default to use the current time.
 	$version = defined( 'GUTENBERG_VERSION' ) && ! ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? GUTENBERG_VERSION : time();
 
+	gutenberg_override_style(
+		$styles,
+		'wp-block-editor-content',
+		gutenberg_url( 'build/block-editor/content.css' ),
+		array(),
+		$version
+	);
+	$styles->add_data( 'wp-block-editor-content', 'rtl', 'replace' );
+
 	// Editor Styles.
 	gutenberg_override_style(
 		$styles,
 		'wp-block-editor',
 		gutenberg_url( 'build/block-editor/style.css' ),
-		array( 'wp-components' ),
+		// Until #37466, we can't specifically add them as editor styles yet,
+		// so we must hard-code it here as a dependency.
+		array( 'wp-components', 'wp-block-editor-content' ),
 		$version
 	);
 	$styles->add_data( 'wp-block-editor', 'rtl', 'replace' );
