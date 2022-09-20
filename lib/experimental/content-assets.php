@@ -74,7 +74,7 @@ add_filter(
 	'block_editor_settings_all',
 	function( $settings ) {
 		// We must override what core is passing now.
-		$settings['__unstableResolvedAssets'] = gutenberg_resolve_assets();
+		$settings['__unstableResolvedAssets'] = gutenberg_resolve_assets_override();
 		return $settings;
 	},
     100
