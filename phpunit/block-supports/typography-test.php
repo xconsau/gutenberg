@@ -248,12 +248,10 @@ class WP_Block_Supports_Typography_Test extends WP_UnitTestCase {
 	 * Tests generating font size values, including fluid formulae, from fontSizes preset.
 	 *
 	 * @covers ::wp_get_typography_font_size_value
-	 * @covers ::wp_get_typography_value_and_unit
-	 * @covers ::wp_get_computed_fluid_typography_value
 	 *
 	 * @dataProvider data_generate_font_size_preset_fixtures
 	 *
-	 * @param array  $font_size_preset                     {
+	 * @param array  $font_size_preset            {
 	 *      Required. fontSizes preset value as seen in theme.json.
 	 *
 	 *     @type string $name Name of the font size preset.
@@ -261,16 +259,16 @@ class WP_Block_Supports_Typography_Test extends WP_UnitTestCase {
 	 *     @type string $size CSS font-size value, including units where applicable.
 	 * }
 	 * @param bool   $should_use_fluid_typography An override to switch fluid typography "on". Can be used for unit testing.
-	 * @param string $expected_output Expected output of gutenberg_get_typography_font_size_value().
+	 * @param string $expected_output             Expected output.
 	 */
-	function test_gutenberg_get_typography_font_size_value( $font_size_preset, $should_use_fluid_typography, $expected_output ) {
+	public function test_gutenberg_get_typography_font_size_value( $font_size_preset, $should_use_fluid_typography, $expected_output ) {
 		$actual = gutenberg_get_typography_font_size_value( $font_size_preset, $should_use_fluid_typography );
 
 		$this->assertSame( $expected_output, $actual );
 	}
 
 	/**
-	 * Data provider for test_wp_get_typography_font_size_value.
+	 * Data provider.
 	 *
 	 * @return array
 	 */
