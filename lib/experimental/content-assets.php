@@ -77,5 +77,5 @@ add_filter(
 		$settings['__unstableResolvedAssets'] = gutenberg_resolve_assets_override();
 		return $settings;
 	},
-    100
+	100
 );
