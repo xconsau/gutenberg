@@ -631,7 +631,7 @@ export default function NavigationSubmenuEdit( {
 					}
 					{ ! openSubmenusOnClick && isLinkOpen && (
 						<Popover
-							position="bottom center"
+							placement="bottom"
 							onClose={ () => setIsLinkOpen( false ) }
 							anchor={ popoverAnchor }
 							shift
