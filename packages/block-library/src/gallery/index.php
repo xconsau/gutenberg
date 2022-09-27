@@ -76,11 +76,11 @@ function block_core_gallery_render( $attributes, $content ) {
 		}
 	}
 
-	$class  = wp_unique_id( 'wp-block-gallery-' );
-	$walker = new WP_HTML_Walker( $content );
-	$walker->next_tag();
-	$walker->add_class( $class );
-	$content = (string) $walker;
+	$class     = wp_unique_id( 'wp-block-gallery-' );
+	$processor = new WP_HTML_Tag_Processor( $content );
+	$processor->next_tag();
+	$processor->add_class( $class );
+	$content = (string) $processor;
 
 	// --gallery-block--gutter-size is deprecated. --wp--style--gallery-gap-default should be used by themes that want to set a default
 	// gap on the gallery.
