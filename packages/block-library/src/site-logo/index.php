@@ -42,8 +42,8 @@ function render_block_core_site_logo( $attributes ) {
 		$processor = new WP_HTML_Tag_Processor( $custom_logo );
 		$processor->next_tag( 'a' );
 		if ( 'home' === $processor->get_attribute( 'rel' ) ) {
-			$processor->set_attribute( 'aria-label', esc_attr( __( '(Home link, opens in a new tab)' ) ) );
-			$processor->set_attribute( 'target', esc_attr( $attributes['linkTarget'] ) );
+			$processor->set_attribute( 'aria-label', __( '(Home link, opens in a new tab)' ) );
+			$processor->set_attribute( 'target', $attributes['linkTarget'] );
 		}
 		$custom_logo = (string) $processor;
 	}

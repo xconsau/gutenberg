@@ -58,7 +58,7 @@ function render_block_core_cover( $attributes, $content ) {
 
 		$processor = new WP_HTML_Tag_Processor( $content );
 		$processor->next_tag();
-		$processor->set_attribute( 'style', esc_attr( $styles ) );
+		$processor->set_attribute( 'style', $styles );
 		$content = (string) $processor;
 	}
 
