@@ -27,6 +27,12 @@ import BlockEditVisuallyButton from '../block-edit-visually-button';
 import { useShowMoversGestures } from './utils';
 import { store as blockEditorStore } from '../../store';
 import __unstableBlockNameContext from './block-name-context';
+import {
+	unlock,
+	__experimentalAccessKey as blockEditorExperiments,
+} from '../../experiments';
+
+const { __unstableGetContentLockingParent } = unlock( blockEditorExperiments );
 
 const BlockToolbar = ( { hideDragHandle } ) => {
 	const {
@@ -46,7 +52,6 @@ const BlockToolbar = ( { hideDragHandle } ) => {
 			isBlockValid,
 			getBlockRootClientId,
 			getSettings,
-			__unstableGetContentLockingParent,
 		} = select( blockEditorStore );
 		const selectedBlockClientIds = getSelectedBlockClientIds();
 		const selectedBlockClientId = selectedBlockClientIds[ 0 ];

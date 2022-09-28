@@ -28,7 +28,12 @@ import {
 	__unstableDuotoneStylesheet as DuotoneStylesheet,
 	__unstableDuotoneUnsetStylesheet as DuotoneUnsetStylesheet,
 } from '../components/duotone';
-import { store as blockEditorStore } from '../store';
+import {
+	unlock,
+	__experimentalAccessKey as blockEditorExperiments,
+} from '../experiments';
+
+const { __unstableGetContentLockingParent } = unlock( blockEditorExperiments );
 
 const EMPTY_ARRAY = [];
 
@@ -159,14 +164,9 @@ const withDuotoneControls = createHigherOrderComponent(
 			props.name,
 			'color.__experimentalDuotone'
 		);
-		const isContentLocked = useSelect(
-			( select ) => {
-				return select(
-					blockEditorStore
-				).__unstableGetContentLockingParent( props.clientId );
-			},
-			[ props.clientId ]
-		);
+		const isContentLocked = useSelect( () => {
+			return __unstableGetContentLockingParent( props.clientId );
+		}, [ props.clientId ] );
 
 		return (
 			<>

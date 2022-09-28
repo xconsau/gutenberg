@@ -11,6 +11,13 @@ import * as selectors from './selectors';
 import * as actions from './actions';
 import { STORE_NAME } from './constants';
 
+const {
+	__unstableSelectionHasUnmergeableBlock,
+	__unstableGetContentLockingParent,
+	__unstableGetTemporarilyEditingAsBlocks,
+	...stableSelectors
+} = selectors;
+
 /**
  * Block editor data store configuration.
  *
@@ -18,7 +25,7 @@ import { STORE_NAME } from './constants';
  */
 export const storeConfig = {
 	reducer,
-	selectors,
+	selectors: stableSelectors,
 	actions,
 };
 

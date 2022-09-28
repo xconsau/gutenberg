@@ -18,7 +18,6 @@ import {
 	isUnmodifiedDefaultBlock,
 	serializeRawBlock,
 	switchToBlockType,
-	store as blocksStore,
 } from '@wordpress/blocks';
 import { withFilters } from '@wordpress/components';
 import {
@@ -40,6 +39,16 @@ import BlockCrashBoundary from './block-crash-boundary';
 import BlockHtml from './block-html';
 import { useBlockProps } from './use-block-props';
 import { store as blockEditorStore } from '../../store';
+import {
+	unlock,
+	__experimentalAccessKey as blockEditorExperiments,
+} from '../../experiments';
+
+const {
+	__experimentalHasContentRoleAttribute,
+	__unstableGetContentLockingParent,
+	__unstableGetTemporarilyEditingAsBlocks,
+} = unlock( blockEditorExperiments );
 
 export const BlockListBlockContext = createContext();
 
@@ -102,20 +111,12 @@ function BlockListBlock( {
 		isTemporarilyEditingAsBlocks,
 	} = useSelect(
 		( select ) => {
-			const {
-				getSettings,
-				__unstableGetContentLockingParent,
-				getTemplateLock,
-				__unstableGetTemporarilyEditingAsBlocks,
-			} = select( blockEditorStore );
+			const { getSettings, getTemplateLock } = select( blockEditorStore );
 			const _hasContentLockedParent =
 				!! __unstableGetContentLockingParent( clientId );
 			return {
 				themeSupportsLayout: getSettings().supportsLayout,
-				isContentBlock:
-					select( blocksStore ).__experimentalHasContentRoleAttribute(
-						name
-					),
+				isContentBlock: __experimentalHasContentRoleAttribute( name ),
 				hasContentLockedParent: _hasContentLockedParent,
 				isContentLocking:
 					getTemplateLock( clientId ) === 'contentOnly' &&

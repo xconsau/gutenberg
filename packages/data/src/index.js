@@ -4,6 +4,11 @@
 import turboCombineReducers from 'turbo-combine-reducers';
 
 /**
+ * WordPress dependencies
+ */
+import { __dangerousOptInToUnstableAPIsOnlyForCoreModules } from '@wordpress/experiments';
+
+/**
  * Internal dependencies
  */
 import defaultRegistry from './default-registry';
@@ -229,3 +234,20 @@ export const use = defaultRegistry.use;
  * @param {StoreDescriptor} store Store descriptor.
  */
 export const register = defaultRegistry.register;
+
+const experimentalAPIs = __dangerousOptInToUnstableAPIsOnlyForCoreModules(
+	'I know using unstable features means my plugin or theme will inevitably break on the next WordPress release.',
+	'@wordpress/data'
+);
+
+function __experimentalPrivateSelector( { name }, selector ) {
+	return defaultRegistry.stores[ name ].store.select( selector );
+}
+function __experimentalPrivateDispatch( { name }, actionThunk ) {
+	return defaultRegistry.stores[ name ].store.dispatch( actionThunk );
+}
+
+export const __experimentalAccessKey = experimentalAPIs.register( {
+	__experimentalPrivateSelector,
+	__experimentalPrivateDispatch,
+} );

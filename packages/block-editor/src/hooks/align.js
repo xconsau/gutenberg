@@ -21,7 +21,12 @@ import { useSelect } from '@wordpress/data';
  */
 import { BlockControls, BlockAlignmentControl } from '../components';
 import useAvailableAlignments from '../components/block-alignment-control/use-available-alignments';
-import { store as blockEditorStore } from '../store';
+import {
+	unlock,
+	__experimentalAccessKey as blockEditorExperiments,
+} from '../experiments';
+
+const { __unstableGetContentLockingParent } = unlock( blockEditorExperiments );
 
 /**
  * An array which includes all possible valid alignments,
@@ -132,14 +137,9 @@ export const withToolbarControls = createHigherOrderComponent(
 		const validAlignments = useAvailableAlignments(
 			blockAllowedAlignments
 		).map( ( { name } ) => name );
-		const isContentLocked = useSelect(
-			( select ) => {
-				return select(
-					blockEditorStore
-				).__unstableGetContentLockingParent( props.clientId );
-			},
-			[ props.clientId ]
-		);
+		const isContentLocked = useSelect( () => {
+			return __unstableGetContentLockingParent( props.clientId );
+		}, [ props.clientId ] );
 		if ( ! validAlignments.length || isContentLocked ) {
 			return blockEdit;
 		}

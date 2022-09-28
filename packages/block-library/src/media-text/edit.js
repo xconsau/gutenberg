@@ -16,6 +16,7 @@ import {
 	useInnerBlocksProps,
 	InspectorControls,
 	useBlockProps,
+	__experimentalAccessKey as blockEditorExperiments,
 	__experimentalImageURLInputUI as ImageURLInputUI,
 	__experimentalImageSizeControl as ImageSizeControl,
 	store as blockEditorStore,
@@ -38,6 +39,9 @@ import { store as coreStore } from '@wordpress/core-data';
  */
 import MediaContainer from './media-container';
 import { DEFAULT_MEDIA_SIZE_SLUG } from './constants';
+import { unlock } from '../experiments';
+
+const { __unstableGetContentLockingParent } = unlock( blockEditorExperiments );
 
 /**
  * Constants
@@ -159,8 +163,7 @@ function MediaTextEdit( { attributes, isSelected, setAttributes, clientId } ) {
 
 	const { imageSizes, image, isContentLocked } = useSelect(
 		( select ) => {
-			const { __unstableGetContentLockingParent, getSettings } =
-				select( blockEditorStore );
+			const { getSettings } = select( blockEditorStore );
 			return {
 				isContentLocked:
 					!! __unstableGetContentLockingParent( clientId ),

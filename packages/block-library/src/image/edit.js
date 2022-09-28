@@ -18,6 +18,7 @@ import {
 	useBlockProps,
 	store as blockEditorStore,
 	__experimentalUseBorderProps as useBorderProps,
+	__experimentalAccessKey as blockEditorExperiments,
 } from '@wordpress/block-editor';
 import { useEffect, useRef, useState } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
@@ -28,6 +29,9 @@ import { store as noticesStore } from '@wordpress/notices';
  * Internal dependencies
  */
 import Image from './image';
+import { unlock } from '../experiments';
+
+const { __unstableGetContentLockingParent } = unlock( blockEditorExperiments );
 
 // Much of this description is duplicated from MediaPlaceholder.
 const placeholder = ( content ) => {
@@ -139,8 +143,7 @@ export function ImageEdit( {
 	const ref = useRef();
 	const { imageDefaultSize, mediaUpload, isContentLocked } = useSelect(
 		( select ) => {
-			const { getSettings, __unstableGetContentLockingParent } =
-				select( blockEditorStore );
+			const { getSettings } = select( blockEditorStore );
 			const settings = getSettings();
 			return {
 				imageDefaultSize: settings.imageDefaultSize,

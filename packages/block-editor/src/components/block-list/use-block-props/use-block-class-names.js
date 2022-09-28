@@ -6,13 +6,19 @@ import classnames from 'classnames';
 /**
  * WordPress dependencies
  */
-import { useSelect } from '@wordpress/data';
+import {
+	useSelect,
+	__experimentalAccessKey as dataExperiments,
+} from '@wordpress/data';
 import { isReusableBlock, getBlockType } from '@wordpress/blocks';
 
 /**
  * Internal dependencies
  */
 import { store as blockEditorStore } from '../../../store';
+import { unlock } from '../../../experiments';
+
+const { __unstableSelectionHasUnmergeableBlock } = unlock( dataExperiments );
 
 /**
  * Returns the class names used for the different states of the block.
@@ -34,7 +40,6 @@ export function useBlockClassNames( clientId ) {
 				hasSelectedInnerBlock,
 				isTyping,
 				__unstableIsFullySelected,
-				__unstableSelectionHasUnmergeableBlock,
 			} = select( blockEditorStore );
 			const { outlineMode } = getSettings();
 			const isDragging = isBlockBeingDragged( clientId );

@@ -13,6 +13,16 @@ import { useEffect, useRef, useCallback } from '@wordpress/element';
  */
 import { store as blockEditorStore } from '../store';
 import { BlockControls } from '../components';
+import {
+	unlock,
+	__experimentalAccessKey as blockEditorExperiments,
+} from '../experiments';
+
+const {
+	__unstableGetContentLockingParent,
+	__unstableGetTemporarilyEditingAsBlocks,
+} = unlock( blockEditorExperiments );
+
 /**
  * External dependencies
  */
@@ -48,11 +58,7 @@ export const withBlockControls = createHigherOrderComponent(
 		const focusModeToRevert = useRef();
 		const { templateLock, isLockedByParent, isEditingAsBlocks } = useSelect(
 			( select ) => {
-				const {
-					__unstableGetContentLockingParent,
-					getTemplateLock,
-					__unstableGetTemporarilyEditingAsBlocks,
-				} = select( blockEditorStore );
+				const { getTemplateLock } = select( blockEditorStore );
 				return {
 					templateLock: getTemplateLock( props.clientId ),
 					isLockedByParent: !! __unstableGetContentLockingParent(

@@ -35,6 +35,12 @@ import BlockVariationTransforms from '../block-variation-transforms';
 import useBlockDisplayInformation from '../use-block-display-information';
 import { store as blockEditorStore } from '../../store';
 import BlockIcon from '../block-icon';
+import {
+	unlock,
+	__experimentalAccessKey as blockEditorExperiments,
+} from '../../experiments';
+
+const { __unstableGetContentLockingParent } = unlock( blockEditorExperiments );
 
 function useContentBlocks( blockTypes, block ) {
 	const contenBlocksObjectAux = useMemo( () => {
@@ -142,7 +148,6 @@ const BlockInspector = ( { showNoBlockSelectedMessage = true } ) => {
 			getSelectedBlockClientId,
 			getSelectedBlockCount,
 			getBlockName,
-			__unstableGetContentLockingParent,
 			getTemplateLock,
 		} = select( blockEditorStore );
 

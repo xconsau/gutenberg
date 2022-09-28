@@ -16,16 +16,18 @@ import { useSelect } from '@wordpress/data';
 import NavigableToolbar from '../navigable-toolbar';
 import BlockToolbar from '../block-toolbar';
 import { store as blockEditorStore } from '../../store';
+import {
+	unlock,
+	__experimentalAccessKey as blockEditorExperiments,
+} from '../../experiments';
+
+const { __unstableGetContentLockingParent } = unlock( blockEditorExperiments );
 
 function BlockContextualToolbar( { focusOnMount, isFixed, ...props } ) {
 	const { blockType, hasParents, showParentSelector } = useSelect(
 		( select ) => {
-			const {
-				getBlockName,
-				getBlockParents,
-				getSelectedBlockClientIds,
-				__unstableGetContentLockingParent,
-			} = select( blockEditorStore );
+			const { getBlockName, getBlockParents, getSelectedBlockClientIds } =
+				select( blockEditorStore );
 			const { getBlockType } = select( blocksStore );
 			const selectedBlockClientIds = getSelectedBlockClientIds();
 			const selectedBlockClientId = selectedBlockClientIds[ 0 ];
