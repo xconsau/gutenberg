@@ -24,19 +24,18 @@ const { __experimentalPrivateSelector } = unlock( dataExperiments );
 
 export const __experimentalAccessKey = register( {
 	// Follow-up on https://github.com/WordPress/gutenberg/pull/42934
-	__unstableSelectionHasUnmergeableBlock: () =>
-		__experimentalPrivateSelector(
-			store,
-			__unstableSelectionHasUnmergeableBlock
-		),
+	__unstableSelectionHasUnmergeableBlock: __experimentalPrivateSelector(
+		store,
+		__unstableSelectionHasUnmergeableBlock
+	),
 
 	// Follow-up on https://github.com/WordPress/gutenberg/pull/43037
-	__unstableGetContentLockingParent: ( ...args ) =>
-		__experimentalPrivateSelector( store, () =>
-			__unstableGetContentLockingParent( ...args )
-		),
-	__unstableGetTemporarilyEditingAsBlocks: ( ...args ) =>
-		__experimentalPrivateSelector( store, () =>
-			__unstableGetTemporarilyEditingAsBlocks( ...args )
-		),
+	__unstableGetContentLockingParent: __experimentalPrivateSelector(
+		store,
+		__unstableGetContentLockingParent
+	),
+	__unstableGetTemporarilyEditingAsBlocks: __experimentalPrivateSelector(
+		store,
+		__unstableGetTemporarilyEditingAsBlocks
+	),
 } );

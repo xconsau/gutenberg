@@ -241,7 +241,8 @@ const experimentalAPIs = __dangerousOptInToUnstableAPIsOnlyForCoreModules(
 );
 
 function __experimentalPrivateSelector( { name }, selector ) {
-	return defaultRegistry.stores[ name ].store.select( selector );
+	return ( ...args ) =>
+		selector( defaultRegistry.stores[ name ].store.getState(), ...args );
 }
 function __experimentalPrivateDispatch( { name }, actionThunk ) {
 	return defaultRegistry.stores[ name ].store.dispatch( actionThunk );

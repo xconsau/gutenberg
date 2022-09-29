@@ -18,6 +18,7 @@ import {
 	isUnmodifiedDefaultBlock,
 	serializeRawBlock,
 	switchToBlockType,
+	__experimentalAccessKey as blocksAccessKey,
 } from '@wordpress/blocks';
 import { withFilters } from '@wordpress/components';
 import {
@@ -45,10 +46,10 @@ import {
 } from '../../experiments';
 
 const {
-	__experimentalHasContentRoleAttribute,
 	__unstableGetContentLockingParent,
 	__unstableGetTemporarilyEditingAsBlocks,
 } = unlock( blockEditorExperiments );
+const { __experimentalHasContentRoleAttribute } = unlock( blocksAccessKey );
 
 export const BlockListBlockContext = createContext();
 

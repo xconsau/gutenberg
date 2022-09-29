@@ -20,8 +20,8 @@ const { __experimentalPrivateSelector } = unlock( dataExperiments );
 
 export const __experimentalAccessKey = register( {
 	// Follow-up on https://github.com/WordPress/gutenberg/pull/42934
-	__experimentalHasContentRoleAttribute: ( ...args ) =>
-		__experimentalPrivateSelector( store, () =>
-			__experimentalHasContentRoleAttribute( ...args )
-		),
+	__experimentalHasContentRoleAttribute: __experimentalPrivateSelector(
+		store,
+		__experimentalHasContentRoleAttribute
+	),
 } );
