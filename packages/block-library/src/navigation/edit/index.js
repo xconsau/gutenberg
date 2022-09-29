@@ -700,18 +700,6 @@ function Navigation( {
 								isExpanded={ true }
 							/>
 						</BlockEditorProvider>
-						<Button
-							variant="link"
-							disabled={
-								! hasManagePermissions ||
-								! hasResolvedNavigationMenus
-							}
-							href={ addQueryArgs( 'edit.php', {
-								post_type: 'wp_navigation',
-							} ) }
-						>
-							{ __( 'Manage menus' ) }
-						</Button>
 					</PanelBody>
 				</InspectorControls>
 				{ stylingInspectorControls }
@@ -793,18 +781,6 @@ function Navigation( {
 								isExpanded={ true }
 							/>
 						</BlockEditorProvider>
-						<Button
-							variant="link"
-							disabled={
-								! hasManagePermissions ||
-								! hasResolvedNavigationMenus
-							}
-							href={ addQueryArgs( 'edit.php', {
-								post_type: 'wp_navigation',
-							} ) }
-						>
-							{ __( 'Manage menus' ) }
-						</Button>
 					</PanelBody>
 				</InspectorControls>
 				<Warning>
@@ -921,18 +897,6 @@ function Navigation( {
 								isExpanded={ true }
 							/>
 						</BlockEditorProvider>
-						<Button
-							variant="link"
-							disabled={
-								! hasManagePermissions ||
-								! hasResolvedNavigationMenus
-							}
-							href={ addQueryArgs( 'edit.php', {
-								post_type: 'wp_navigation',
-							} ) }
-						>
-							{ __( 'Manage menus' ) }
-						</Button>
 					</PanelBody>
 				</InspectorControls>
 				{ stylingInspectorControls }
@@ -959,6 +923,19 @@ function Navigation( {
 									} }
 								/>
 							) }
+						<Button
+							variant="link"
+							className="wp-block-navigation-manage-menus-button"
+							disabled={
+								! hasManagePermissions ||
+								! hasResolvedNavigationMenus
+							}
+							href={ addQueryArgs( 'edit.php', {
+								post_type: 'wp_navigation',
+							} ) }
+						>
+							{ __( 'Manage menus' ) }
+						</Button>
 					</InspectorControls>
 				) }
 
