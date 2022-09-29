@@ -81,4 +81,20 @@ describe( '__dangerousOptInToUnstableAPIsOnlyForCoreModules', () => {
 			dataExperimentalFunctions.__experimentalFunction
 		).toHaveBeenCalled();
 	} );
+	it( 'Should throw an exception upon accessing a non-existing experimental API', () => {
+		const { register, unlock } =
+			__dangerousOptInToUnstableAPIsOnlyForCoreModules(
+				requiredConsent,
+				'@wordpress/block-editor'
+			);
+
+		const accessKey = register( {
+			fooAPI: true,
+		} );
+
+		expect( unlock( accessKey ).fooAPI ).toBe( true );
+		expect( () => unlock( accessKey ).noSuchAPI ).toThrowError(
+			/No experimental API with name "noSuchAPI" has been registered/
+		);
+	} );
 } );

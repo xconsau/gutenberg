@@ -6,19 +6,21 @@ import classnames from 'classnames';
 /**
  * WordPress dependencies
  */
-import {
-	useSelect,
-	__experimentalAccessKey as dataExperiments,
-} from '@wordpress/data';
+import { useSelect } from '@wordpress/data';
 import { isReusableBlock, getBlockType } from '@wordpress/blocks';
 
 /**
  * Internal dependencies
  */
 import { store as blockEditorStore } from '../../../store';
-import { unlock } from '../../../experiments';
+import {
+	unlock,
+	__experimentalAccessKey as blockEditorExperiments,
+} from '../../../experiments';
 
-const { __unstableSelectionHasUnmergeableBlock } = unlock( dataExperiments );
+const { __unstableSelectionHasUnmergeableBlock } = unlock(
+	blockEditorExperiments
+);
 
 /**
  * Returns the class names used for the different states of the block.

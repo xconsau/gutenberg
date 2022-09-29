@@ -244,11 +244,14 @@ function __experimentalPrivateSelector( { name }, selector ) {
 	return ( ...args ) =>
 		selector( defaultRegistry.stores[ name ].store.getState(), ...args );
 }
-function __experimentalPrivateDispatch( { name }, actionThunk ) {
-	return defaultRegistry.stores[ name ].store.dispatch( actionThunk );
+function __experimentalPrivateActionCreator( { name }, actionCreator ) {
+	return ( ...args ) =>
+		defaultRegistry.stores[ name ].store.dispatch(
+			actionCreator( ...args )
+		);
 }
 
 export const __experimentalAccessKey = experimentalAPIs.register( {
 	__experimentalPrivateSelector,
-	__experimentalPrivateDispatch,
+	__experimentalPrivateActionCreator,
 } );

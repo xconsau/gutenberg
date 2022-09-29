@@ -58,9 +58,20 @@ export const __dangerousOptInToUnstableAPIsOnlyForCoreModules = (
 				'your product will inevitably break on the next WordPress release.'
 		);
 	}
+	const apis = {};
 	registeredExperiments[ moduleName ] = {
 		accessKey: {},
-		apis: {},
+		apis,
+		apisProxy: new Proxy( apis, {
+			get( target, name ) {
+				if ( ! ( name in target ) ) {
+					throw new Error(
+						`No experimental API with name "${ name }" has been registered under the module ${ moduleName }.`
+					);
+				}
+				return target[ name ];
+			},
+		} ),
 	};
 	return {
 		register: ( experiments ) => {
@@ -73,7 +84,7 @@ export const __dangerousOptInToUnstableAPIsOnlyForCoreModules = (
 		unlock: ( accessKey ) => {
 			for ( const experiment of Object.values( registeredExperiments ) ) {
 				if ( experiment.accessKey === accessKey ) {
-					return experiment.apis;
+					return experiment.apisProxy;
 				}
 			}
 
