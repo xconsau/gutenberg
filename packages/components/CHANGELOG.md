@@ -2,24 +2,59 @@
 
 ## Unreleased
 
+### Enhancements
+
+-   `FontSizePicker`: Updated to take up full width of its parent and have a 40px Reset button when `size` is `__unstable-large` ((44559)[https://github.com/WordPress/gutenberg/pull/44559]).
+
 ### Bug Fix
 
+-   `Popover`: fix limitShift logic by adding iframe offset correctly [#42950](https://github.com/WordPress/gutenberg/pull/42950)).
+-   `Popover`: refine position-to-placement conversion logic, add tests ([#44377](https://github.com/WordPress/gutenberg/pull/44377)).
+-   `ToggleGroupControl`: adjust icon color when inactive, from `gray-700` to `gray-900` ([#44575](https://github.com/WordPress/gutenberg/pull/44575)).
+-   `TokenInput`: improve logic around the `aria-activedescendant` attribute, which was causing unintended focus behavior for some screen readers ([#44526](https://github.com/WordPress/gutenberg/pull/44526)).
+
+### Internal
+
+-   `Mobile` updated to ignore `react/exhaustive-deps` eslint rule ([#44207](https://github.com/WordPress/gutenberg/pull/44207)).
+-   `Popover`: refactor unit tests to TypeScript and modern RTL assertions ([#44373](https://github.com/WordPress/gutenberg/pull/44373)).
+-   `SearchControl`: updated to ignore `react/exhaustive-deps` eslint rule in native files([#44381](https://github.com/WordPress/gutenberg/pull/44381))
+-   `ResizableBox` updated to pass the `react/exhaustive-deps` eslint rule ([#44370](https://github.com/WordPress/gutenberg/pull/44370)).
+-   `Sandbox`: updated to satisfy `react/exhaustive-deps` eslint rule ([#44378](https://github.com/WordPress/gutenberg/pull/44378))
+-   `FontSizePicker`: Convert to TypeScript ([#44449](https://github.com/WordPress/gutenberg/pull/44449)).
+-   `FontSizePicker`: Replace SCSS with Emotion + components ([#44483](https://github.com/WordPress/gutenberg/pull/44483)).
+
+## 21.1.0 (2022-09-21)
+
+### Deprecations
+
+-   `Popover`: added new `anchor` prop, supposed to supersede all previous anchor-related props (`anchorRef`, `anchorRect`, `getAnchorRect`). These older anchor-related props are now marked as deprecated and are scheduled to be removed in WordPress 6.3 ([#43691](https://github.com/WordPress/gutenberg/pull/43691)).
+
+### Bug Fix
+
+-   `Button`: Remove unexpected `has-text` class when empty children are passed ([#44198](https://github.com/WordPress/gutenberg/pull/44198)).
 -   The `LinkedButton` to unlink sides in `BoxControl`, `BorderBoxControl` and `BorderRadiusControl` have changed from a rectangular primary button to an icon-only button, with a sentence case tooltip, and default-size icon for better legibility. The `Button` component has been fixed so when `isSmall` and `icon` props are set, and no text is present, the button shape is square rather than rectangular.
 
 ### New Features
 
--   `Popover`: added new `anchor` prop, supposed to supersede all previous anchor-related props (`anchorRef`, `anchorRect`, `getAnchorRect`). These older anchor-related props are now marked as deprecated and are scheduled to be removed in WordPress 6.3 ([#43691](https://github.com/WordPress/gutenberg/pull/43691)).
+-   `MenuItem`: Add suffix prop for injecting non-icon and non-shortcut content to menu items ([#44260](https://github.com/WordPress/gutenberg/pull/44260)).
+-   `ToolsPanel`: Add subheadings to ellipsis menu and reset text to default control menu items ([#44260](https://github.com/WordPress/gutenberg/pull/44260)).
 
 ### Internal
 
 -   `NavigationMenu` updated to ignore `react/exhaustive-deps` eslint rule ([#44090](https://github.com/WordPress/gutenberg/pull/44090)).
+-   `RangeControl`: updated to pass `react/exhaustive-deps` eslint rule ([#44271](https://github.com/WordPress/gutenberg/pull/44271)).
+-   `UnitControl` updated to pass the `react/exhaustive-deps` eslint rule ([#44161](https://github.com/WordPress/gutenberg/pull/44161)).
+-   `Notice`: updated to satisfy `react/exhaustive-deps` eslint rule ([#44157](https://github.com/WordPress/gutenberg/pull/44157))
+
 
 ## 21.0.0 (2022-09-13)
 
-### Breaking Changes
+### Deprecations
 
 -   `FontSizePicker`: Deprecate bottom margin style. Add a `__nextHasNoMarginBottom` prop to start opting into the margin-free styles that will become the default in a future version, currently scheduled to be WordPress 6.4 ([#43870](https://github.com/WordPress/gutenberg/pull/43870)).
 -   `AnglePickerControl`: Deprecate bottom margin style. Add a `__nextHasNoMarginBottom` prop to start opting into the margin-free styles that will become the default in a future version, currently scheduled to be WordPress 6.4 ([#43867](https://github.com/WordPress/gutenberg/pull/43867)).
+-   `Popover`: deprecate `__unstableShift` prop in favour of new `shift` prop. The `__unstableShift` is currently scheduled for removal in WordPress 6.3 ([#43845](https://github.com/WordPress/gutenberg/pull/43845)).
+-   `Popover`: removed the `__unstableObserveElement` prop, which is not necessary anymore. The functionality is now supported directly by the component without the need of an external prop ([#43617](https://github.com/WordPress/gutenberg/pull/43617)).
 
 ### Bug Fix
 
@@ -46,7 +81,6 @@
 -   `FocalPointPicker`: Tweak media placeholder background color to be consistent with the grays in `@wordpress/base-styles` ([#43994](https://github.com/WordPress/gutenberg/pull/43994)).
 -   `RangeControl`: Tweak rail, track, and mark colors to be consistent with the grays in `@wordpress/base-styles` ([#43994](https://github.com/WordPress/gutenberg/pull/43994)).
 -   `UnitControl`: Tweak unit dropdown hover color to be consistent with the grays in `@wordpress/base-styles` ([#43994](https://github.com/WordPress/gutenberg/pull/43994)).
--   `Popover`: stabilize `__unstableShift` to `shift` ([#43845](https://github.com/WordPress/gutenberg/pull/43845)).
 
 ### Internal
 
@@ -82,9 +116,10 @@
 
 ## 20.0.0 (2022-08-24)
 
-### Breaking Changes
+### Deprecations
 
 -   `CustomSelectControl`: Deprecate constrained width style. Add a `__nextUnconstrainedWidth` prop to start opting into the unconstrained width that will become the default in a future version, currently scheduled to be WordPress 6.4 ([#43230](https://github.com/WordPress/gutenberg/pull/43230)).
+-   `Popover`: deprecate `__unstableForcePosition` prop in favour of new `flip` and `resize` props. The `__unstableForcePosition` is currently scheduled for removal in WordPress 6.3 ([#43546](https://github.com/WordPress/gutenberg/pull/43546)).
 
 ### Bug Fix
 
