@@ -132,8 +132,10 @@ describe( 'Popover', () => {
 		} );
 
 		describe( 'focus behavior', () => {
-			it( 'should focus the popover by default when opened', () => {
-				render( <Popover>Popover content</Popover> );
+			it( 'should focus the popover container when opened', () => {
+				render(
+					<Popover focusOnMount={ true }>Popover content</Popover>
+				);
 
 				expect(
 					screen.getByText( 'Popover content' ).parentElement
