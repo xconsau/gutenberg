@@ -48,5 +48,6 @@ jobs:
                   stale-issue-message: ${{ matrix.message }}
                   days-before-stale: ${{ matrix.days-before-stale }}
                   days-before-close: ${{ matrix.days-before-close }}
+                  only-labels: ${{ matrix.only-labels }}
                   remove-stale-when-updated: ${{ matrix.remove-stale-when-updated }}
                   stale-issue-label: ${{ matrix.stale-issue-label }}
