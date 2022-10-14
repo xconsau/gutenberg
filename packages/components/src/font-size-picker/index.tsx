@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import type { ReactNode, ForwardedRef } from 'react';
+import type { ForwardedRef } from 'react';
 
 /**
  * WordPress dependencies
@@ -27,11 +27,10 @@ import {
 import {
 	getFontSizeOptions,
 	getSelectedOption,
-	splitValueAndUnitFromSize,
+	parseNumberAndUnitFromSize,
 	isSimpleCssValue,
 	CUSTOM_FONT_SIZE,
 } from './utils';
-import { VStack } from '../v-stack';
 import { HStack } from '../h-stack';
 import type {
 	FontSizePickerProps,
@@ -46,20 +45,6 @@ import {
 	ResetButton,
 } from './styles';
 import { Spacer } from '../spacer';
-
-// This conditional is needed to maintain the spacing before the slider in the `withSlider` case.
-const MaybeVStack = ( {
-	__nextHasNoMarginBottom,
-	children,
-}: {
-	__nextHasNoMarginBottom: boolean;
-	children: ReactNode;
-} ) =>
-	! __nextHasNoMarginBottom ? (
-		<>{ children }</>
-	) : (
-		<VStack spacing={ 6 } children={ children } />
-	);
 
 const UnforwardedFontSizePicker = (
 	props: FontSizePickerProps,
@@ -85,11 +70,6 @@ const UnforwardedFontSizePicker = (
 		} );
 	}
 
-	const hasUnits = [ typeof value, typeof fontSizes?.[ 0 ]?.size ].includes(
-		'string'
-	);
-	const noUnitsValue = ! hasUnits ? value : parseInt( String( value ) );
-	const isPixelValue = typeof value === 'number' || value?.endsWith?.( 'px' );
 	const units = useCustomUnits( {
 		availableUnits: [ 'px', 'em', 'rem' ],
 	} );
@@ -144,7 +124,9 @@ const UnforwardedFontSizePicker = (
 			! fontSizesContainComplexValues &&
 			typeof selectedOption.size === 'string'
 		) {
-			const [ , unit ] = splitValueAndUnitFromSize( selectedOption.size );
+			const [ , unit ] = parseNumberAndUnitFromSize(
+				selectedOption.size
+			);
 			hint += `(${ unit })`;
 		}
 		return hint;
@@ -169,6 +151,17 @@ const UnforwardedFontSizePicker = (
 		__( 'Currently selected font size: %s' ),
 		selectedOption.name
 	);
+
+	// If neither the value or first font size is a string, then FontSizePicker
+	// operates in a legacy "unitless" mode where UnitControl can only be used
+	// to select px values and onChange() is always called with number values.
+	const hasUnits =
+		typeof value === 'string' || typeof fontSizes[ 0 ]?.size === 'string';
+
+	const [ valueNumber, valueUnit ] = parseNumberAndUnitFromSize( value );
+	const isValueUnitRelative =
+		!! valueUnit && [ 'em', 'rem' ].includes( valueUnit );
+
 	return (
 		<Container ref={ ref } className="components-font-size-picker">
 			<VisuallyHidden as="legend">{ __( 'Font size' ) }</VisuallyHidden>
@@ -201,141 +194,149 @@ const UnforwardedFontSizePicker = (
 					) }
 				</HStack>
 			</Spacer>
-			<MaybeVStack __nextHasNoMarginBottom={ __nextHasNoMarginBottom }>
-				<Controls
-					className="components-font-size-picker__controls"
-					__nextHasNoMarginBottom={ __nextHasNoMarginBottom }
-				>
-					{ !! fontSizes.length &&
-						shouldUseSelectControl &&
-						! showCustomValueControl && (
-							<CustomSelectControl
-								__nextUnconstrainedWidth
-								className="components-font-size-picker__select"
-								label={ __( 'Font size' ) }
-								hideLabelFromVision
-								describedBy={ currentFontSizeSR }
-								options={ options as FontSizeSelectOption[] }
-								value={ (
-									options as FontSizeSelectOption[]
-								 ).find(
-									( option ) =>
-										option.key === selectedOption.slug
-								) }
-								onChange={ ( {
-									selectedItem,
-								}: {
-									selectedItem: FontSizeSelectOption;
-								} ) => {
+			<Controls
+				className="components-font-size-picker__controls"
+				__nextHasNoMarginBottom={ __nextHasNoMarginBottom }
+			>
+				{ !! fontSizes.length &&
+					shouldUseSelectControl &&
+					! showCustomValueControl && (
+						<CustomSelectControl
+							__nextUnconstrainedWidth
+							className="components-font-size-picker__select"
+							label={ __( 'Font size' ) }
+							hideLabelFromVision
+							describedBy={ currentFontSizeSR }
+							options={ options as FontSizeSelectOption[] }
+							value={ ( options as FontSizeSelectOption[] ).find(
+								( option ) => option.key === selectedOption.slug
+							) }
+							onChange={ ( {
+								selectedItem,
+							}: {
+								selectedItem: FontSizeSelectOption;
+							} ) => {
+								if ( selectedItem.size === undefined ) {
+									onChange?.( undefined );
+								} else {
 									onChange?.(
 										hasUnits
 											? selectedItem.size
 											: Number( selectedItem.size )
 									);
-									if (
-										selectedItem.key === CUSTOM_FONT_SIZE
-									) {
-										setShowCustomValueControl( true );
-									}
-								} }
-								size={ size }
-							/>
-						) }
-					{ ! shouldUseSelectControl && ! showCustomValueControl && (
-						<ToggleGroupControl
-							__nextHasNoMarginBottom={ __nextHasNoMarginBottom }
-							label={ __( 'Font size' ) }
-							hideLabelFromVision
-							value={ value }
-							onChange={ ( newValue ) => {
+								}
+								if ( selectedItem.key === CUSTOM_FONT_SIZE ) {
+									setShowCustomValueControl( true );
+								}
+							} }
+							size={ size }
+						/>
+					) }
+				{ ! shouldUseSelectControl && ! showCustomValueControl && (
+					<ToggleGroupControl
+						__nextHasNoMarginBottom={ __nextHasNoMarginBottom }
+						label={ __( 'Font size' ) }
+						hideLabelFromVision
+						value={ value }
+						onChange={ ( newValue ) => {
+							if ( newValue === undefined ) {
+								onChange?.( undefined );
+							} else {
 								onChange?.(
 									hasUnits ? newValue : Number( newValue )
 								);
-							} }
-							isBlock
-							size={ size }
-						>
-							{ ( options as FontSizeToggleGroupOption[] ).map(
-								( option ) => (
-									<ToggleGroupControlOption
-										key={ option.key }
-										value={ option.value }
-										label={ option.label }
-										aria-label={ option.name }
-										showTooltip={ true }
-									/>
-								)
-							) }
-						</ToggleGroupControl>
-					) }
-					{ ! withSlider &&
-						! disableCustomFontSizes &&
-						showCustomValueControl && (
-							<Flex className="components-font-size-picker__custom-size-control">
-								<FlexItem isBlock>
-									<UnitControl
-										label={ __( 'Custom' ) }
-										labelPosition="top"
+							}
+						} }
+						isBlock
+						size={ size }
+					>
+						{ ( options as FontSizeToggleGroupOption[] ).map(
+							( option ) => (
+								<ToggleGroupControlOption
+									key={ option.key }
+									value={ option.value }
+									label={ option.label }
+									aria-label={ option.name }
+									showTooltip={ true }
+								/>
+							)
+						) }
+					</ToggleGroupControl>
+				) }
+				{ ! disableCustomFontSizes && showCustomValueControl && (
+					<Flex className="components-font-size-picker__custom-size-control">
+						<FlexItem isBlock>
+							<UnitControl
+								label={ __( 'Custom' ) }
+								labelPosition="top"
+								hideLabelFromVision
+								value={ value }
+								onChange={ ( newValue ) => {
+									if ( newValue === undefined ) {
+										onChange?.( undefined );
+									} else {
+										onChange?.(
+											hasUnits
+												? newValue
+												: parseInt( newValue, 10 )
+										);
+									}
+								} }
+								size={ size }
+								units={ hasUnits ? units : [] }
+								min={ 0 }
+							/>
+						</FlexItem>
+						{ withSlider && (
+							<FlexItem isBlock>
+								<Spacer marginX={ 2 } marginBottom={ 0 }>
+									<RangeControl
+										__nextHasNoMarginBottom={
+											__nextHasNoMarginBottom
+										}
+										className="components-font-size-picker__custom-input"
+										label={ __( 'Custom Size' ) }
 										hideLabelFromVision
-										value={ value }
-										onChange={ ( nextSize ) => {
-											if (
-												! nextSize ||
-												0 === parseFloat( nextSize )
-											) {
+										value={ valueNumber }
+										initialPosition={ fallbackFontSize }
+										withInputField={ false }
+										onChange={ ( newValue ) => {
+											if ( newValue === undefined ) {
 												onChange?.( undefined );
-											} else {
+											} else if ( hasUnits ) {
 												onChange?.(
-													hasUnits
-														? nextSize
-														: parseInt(
-																nextSize,
-																10
-														  )
+													newValue +
+														( valueUnit ?? 'px' )
 												);
+											} else {
+												onChange?.( newValue );
 											}
 										} }
-										size={ size }
-										units={ hasUnits ? units : [] }
+										min={ isValueUnitRelative ? 0.75 : 12 }
+										max={ isValueUnitRelative ? 6.25 : 100 }
+										step={ isValueUnitRelative ? 0.05 : 1 }
 									/>
-								</FlexItem>
-								{ withReset && (
-									<FlexItem>
-										<ResetButton
-											disabled={ value === undefined }
-											onClick={ () => {
-												onChange?.( undefined );
-											} }
-											isSmall
-											variant="secondary"
-											size={ size }
-										>
-											{ __( 'Reset' ) }
-										</ResetButton>
-									</FlexItem>
-								) }
-							</Flex>
+								</Spacer>
+							</FlexItem>
 						) }
-				</Controls>
-				{ withSlider && (
-					<RangeControl
-						__nextHasNoMarginBottom={ __nextHasNoMarginBottom }
-						className="components-font-size-picker__custom-input"
-						label={ __( 'Custom Size' ) }
-						value={
-							isPixelValue && noUnitsValue
-								? Number( noUnitsValue )
-								: undefined
-						}
-						initialPosition={ fallbackFontSize }
-						onChange={ ( newValue ) => {
-							onChange?.( hasUnits ? newValue + 'px' : newValue );
-						} }
-						min={ 12 }
-						max={ 100 }
-					/>
+						{ withReset && (
+							<FlexItem>
+								<ResetButton
+									disabled={ value === undefined }
+									onClick={ () => {
+										onChange?.( undefined );
+									} }
+									isSmall
+									variant="secondary"
+									size={ size }
+								>
+									{ __( 'Reset' ) }
+								</ResetButton>
+							</FlexItem>
+						) }
+					</Flex>
 				) }
-			</MaybeVStack>
+			</Controls>
 		</Container>
 	);
 };
