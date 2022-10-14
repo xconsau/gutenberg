@@ -19,7 +19,7 @@ import RangeControl from '../range-control';
 import { Flex, FlexItem } from '../flex';
 import { default as UnitControl, useCustomUnits } from '../unit-control';
 import { VisuallyHidden } from '../visually-hidden';
-import { parseNumberAndUnitFromSize, isSimpleCssValue } from './utils';
+import { parseNumberAndUnitFromSize, getCommonSizeUnit } from './utils';
 import { HStack } from '../h-stack';
 import type { FontSizePickerProps } from './types';
 import {
@@ -32,6 +32,7 @@ import {
 import { Spacer } from '../spacer';
 import FontSizePickerSelect from './select';
 import FontSizePickerToggleGroup from './toggle-group';
+import { T_SHIRT_NAMES } from './constants';
 
 const UnforwardedFontSizePicker = (
 	props: FontSizePickerProps,
@@ -74,48 +75,29 @@ const UnforwardedFontSizePicker = (
 
 	const headerHint = useMemo( () => {
 		if ( showCustomValueControl ) {
-			return `(${ __( 'Custom' ) })`;
+			return __( 'Custom' );
 		}
 
-		// If we have a custom value that is not available in the font sizes,
-		// show it as a hint as long as it's a simple CSS value.
-		if ( isCustomValue ) {
-			return value !== undefined && isSimpleCssValue( value )
-				? `(${ value })`
-				: '';
-		}
-
-		if ( ! selectedFontSize ) {
+		if ( ! shouldUseSelectControl ) {
+			if ( selectedFontSize ) {
+				return (
+					selectedFontSize.name ||
+					T_SHIRT_NAMES[ fontSizes.indexOf( selectedFontSize ) ]
+				);
+			}
 			return '';
 		}
 
-		if ( shouldUseSelectControl ) {
-			return isSimpleCssValue( selectedFontSize.size )
-				? `(${ selectedFontSize.size })`
-				: '';
+		const commonUnit = getCommonSizeUnit( fontSizes );
+		if ( commonUnit ) {
+			return `(${ commonUnit })`;
 		}
 
-		// Calculate the `hint` for toggle group control.
-		let hint = selectedFontSize.name ?? '';
-		const fontSizesContainComplexValues = fontSizes.some(
-			( fontSize ) => ! isSimpleCssValue( fontSize.size )
-		);
-		if (
-			! fontSizesContainComplexValues &&
-			typeof selectedFontSize.size === 'string'
-		) {
-			const [ , unit ] = parseNumberAndUnitFromSize(
-				selectedFontSize.size
-			);
-			hint += `(${ unit })`;
-		}
-		return hint;
+		return '';
 	}, [
 		showCustomValueControl,
-		isCustomValue,
-		selectedFontSize,
-		value,
 		shouldUseSelectControl,
+		selectedFontSize,
 		fontSizes,
 	] );
 

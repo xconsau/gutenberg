@@ -11,7 +11,11 @@ import type {
 	FontSizePickerSelectProps,
 	FontSizePickerSelectOption,
 } from './types';
-import { parseNumberAndUnitFromSize } from './utils';
+import {
+	getCommonSizeUnit,
+	isSimpleCssValue,
+	parseNumberAndUnitFromSize,
+} from './utils';
 
 const DEFAULT_OPTION: FontSizePickerSelectOption = {
 	key: 'default',
@@ -34,16 +38,25 @@ const FontSizePickerSelect = ( props: FontSizePickerSelectProps ) => {
 		onSelectCustom,
 	} = props;
 
+	const areAllSizesSameUnit = !! getCommonSizeUnit( fontSizes );
+
 	const options: FontSizePickerSelectOption[] = [
 		DEFAULT_OPTION,
 		...fontSizes.map( ( fontSize ) => {
-			const [ number ] = parseNumberAndUnitFromSize( fontSize.size );
+			let hint;
+			if ( areAllSizesSameUnit ) {
+				const [ number ] = parseNumberAndUnitFromSize( fontSize.size );
+				if ( number !== undefined ) {
+					hint = String( number );
+				}
+			} else if ( isSimpleCssValue( fontSize.size ) ) {
+				hint = String( fontSize.size );
+			}
 			return {
 				key: fontSize.slug,
 				name: fontSize.name || fontSize.slug,
 				value: fontSize.size,
-				__experimentalHint:
-					number !== undefined ? String( number ) : undefined,
+				__experimentalHint: hint,
 			};
 		} ),
 		...( disableCustomFontSizes ? [] : [ CUSTOM_OPTION ] ),
@@ -65,6 +78,7 @@ const FontSizePickerSelect = ( props: FontSizePickerSelectProps ) => {
 			) }
 			options={ options }
 			value={ selectedOption }
+			__experimentalShowSelectedHint
 			onChange={ ( {
 				selectedItem,
 			}: {

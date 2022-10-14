@@ -6,7 +6,7 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import type { FontSizePickerProps } from './types';
+import type { FontSizePickerProps, FontSize } from './types';
 
 /**
  * Given a font size, returns the numeric part and unit part. For example, given
@@ -38,4 +38,24 @@ export function isSimpleCssValue(
 ) {
 	const sizeRegex = /^[\d\.]+(px|em|rem|vw|vh|%)?$/i;
 	return sizeRegex.test( String( value ) );
+}
+
+/**
+ * If all of the given font sizes have the same unit (e.g. 'px'), return that
+ * unit. Otherwise return null.
+ *
+ * @param  fontSizes List of font sizes.
+ * @return The common unit, or null.
+ */
+export function getCommonSizeUnit( fontSizes: FontSize[] ) {
+	const [ firstFontSize, ...otherFontSizes ] = fontSizes;
+	if ( ! firstFontSize ) {
+		return null;
+	}
+	const [ , firstUnit ] = parseNumberAndUnitFromSize( firstFontSize.size );
+	const areAllSizesSameUnit = otherFontSizes.every( ( fontSize ) => {
+		const [ , unit ] = parseNumberAndUnitFromSize( fontSize.size );
+		return unit === firstUnit;
+	} );
+	return areAllSizesSameUnit ? firstUnit : null;
 }

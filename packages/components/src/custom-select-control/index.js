@@ -75,6 +75,7 @@ export default function CustomSelectControl( {
 	/** @type {import('../select-control/types').SelectControlProps.size} */
 	size = 'default',
 	value: _selectedItem,
+	__experimentalShowSelectedHint = false,
 } ) {
 	const {
 		getLabelProps,
@@ -187,6 +188,12 @@ export default function CustomSelectControl( {
 					} ) }
 				>
 					{ itemToString( selectedItem ) }
+					{ __experimentalShowSelectedHint &&
+						selectedItem.__experimentalHint && (
+							<span className="components-custom-select-control__hint">
+								{ selectedItem.__experimentalHint }
+							</span>
+						) }
 				</SelectControlSelect>
 			</InputBaseWithBackCompatMinWidth>
 			{ /* eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions */ }
