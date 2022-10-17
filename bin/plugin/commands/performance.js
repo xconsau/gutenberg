@@ -220,7 +220,10 @@ async function runTestSuite( testSuite, performanceTestDirectory ) {
  */
 async function runPerformanceTests( branches, options ) {
 	const timer = new Timer();
-	const lgt = (...args) => args.map( arg => 'string' === typeof arg ? arg : arg.humanSpan() );
+	const lgt = ( ...args ) =>
+		args.map( ( arg ) =>
+			'string' === typeof arg ? arg : arg.humanSpan()
+		);
 
 	// The default value doesn't work because commander provides an array.
 	if ( branches.length === 0 ) {
