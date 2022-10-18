@@ -221,7 +221,7 @@ async function runTestSuite( testSuite, performanceTestDirectory ) {
  */
 async function runPerformanceTests( branches, options ) {
 	const timer = new Timer();
-	const lgt = ( ...args ) =>
+	const lgt = ( /** @type {(string | Timer)[]} */ ...args ) =>
 		args.map( ( arg ) =>
 			'string' === typeof arg ? arg : arg.humanSpan()
 		);
