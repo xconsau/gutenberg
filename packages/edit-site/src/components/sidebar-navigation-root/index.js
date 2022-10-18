@@ -86,6 +86,13 @@ export default function SidebarNavigationRoot() {
 				children: __( 'Home' ),
 			},
 		],
+		footer: {
+			...useLink( {
+				postType: 'wp_template',
+				postId: undefined,
+			} ),
+			children: __( 'Manage all templates' ),
+		},
 	};
 
 	return (
@@ -130,6 +137,7 @@ export default function SidebarNavigationRoot() {
 							<SidebarNavigationItem { ...item } key={ index } />
 						) ) }
 					</ItemGroup>
+					<SidebarNavigationItem { ...templates.footer } />
 				</VStack>
 			</NavigatorScreen>
 		</NavigatorProvider>
