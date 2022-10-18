@@ -44,7 +44,7 @@ export default function SidebarNavigationRoot() {
 				path: '/templates',
 				...useLink( {
 					postType: 'wp_template',
-					postId: undefined,
+					postId: 'twentytwentythree//index',
 				} ),
 				icon: layout,
 				'aria-pressed':
@@ -76,6 +76,9 @@ export default function SidebarNavigationRoot() {
 				} ),
 				icon: layout,
 				children: __( 'Index' ),
+				'aria-pressed':
+					params.postType === 'wp_template' &&
+					params.postId === 'twentytwentythree//index',
 			},
 			{
 				...useLink( {
@@ -84,6 +87,9 @@ export default function SidebarNavigationRoot() {
 				} ),
 				icon: layout,
 				children: __( 'Home' ),
+				'aria-pressed':
+					params.postType === 'wp_template' &&
+					params.postId === 'twentytwentythree//home',
 			},
 		],
 		footer: {
@@ -92,6 +98,8 @@ export default function SidebarNavigationRoot() {
 				postId: undefined,
 			} ),
 			children: __( 'Manage all templates' ),
+			'aria-pressed':
+				params.postType === 'wp_template' && ! params.postId,
 		},
 	};
 
