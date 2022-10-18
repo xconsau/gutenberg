@@ -246,9 +246,11 @@ describe( 'splitting and merging blocks', () => {
 			<p>item 1</p>
 			<!-- /wp:paragraph -->
 
-			<!-- wp:paragraph -->
-			<p>item 2</p>
-			<!-- /wp:paragraph -->"
+			<!-- wp:list -->
+			<ul><!-- wp:list-item -->
+			<li>item 2</li>
+			<!-- /wp:list-item --></ul>
+			<!-- /wp:list -->"
 		` );
 			await page.keyboard.press( 'Delete' );
 			// Carret should be in the first block and at the proper position.
@@ -258,9 +260,11 @@ describe( 'splitting and merging blocks', () => {
 			<p>hi-item 1</p>
 			<!-- /wp:paragraph -->
 
-			<!-- wp:paragraph -->
-			<p>item 2</p>
-			<!-- /wp:paragraph -->"
+			<!-- wp:list -->
+			<ul><!-- wp:list-item -->
+			<li>item 2</li>
+			<!-- /wp:list-item --></ul>
+			<!-- /wp:list -->"
 		` );
 		} );
 		it( 'on backspace', async () => {
@@ -282,9 +286,11 @@ describe( 'splitting and merging blocks', () => {
 			<p>item 1</p>
 			<!-- /wp:paragraph -->
 
-			<!-- wp:paragraph -->
-			<p>item 2</p>
-			<!-- /wp:paragraph -->"
+			<!-- wp:list -->
+			<ul><!-- wp:list-item -->
+			<li>item 2</li>
+			<!-- /wp:list-item --></ul>
+			<!-- /wp:list -->"
 		` );
 			await page.keyboard.press( 'Backspace' );
 			// Carret should be in the first block and at the proper position.
@@ -294,9 +300,11 @@ describe( 'splitting and merging blocks', () => {
 			<p>hi-item 1</p>
 			<!-- /wp:paragraph -->
 
-			<!-- wp:paragraph -->
-			<p>item 2</p>
-			<!-- /wp:paragraph -->"
+			<!-- wp:list -->
+			<ul><!-- wp:list-item -->
+			<li>item 2</li>
+			<!-- /wp:list-item --></ul>
+			<!-- /wp:list -->"
 		` );
 		} );
 	} );
