@@ -4,6 +4,10 @@
 import {
 	__experimentalItemGroup as ItemGroup,
 	__experimentalVStack as VStack,
+	__experimentalNavigatorProvider as NavigatorProvider,
+	__experimentalNavigatorScreen as NavigatorScreen,
+	__experimentalNavigatorButton as NavigatorButton,
+	__experimentalNavigatorBackButton as NavigatorBackButton,
 } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 import { globe, layout, symbolFilled } from '@wordpress/icons';
@@ -37,6 +41,7 @@ export default function SidebarNavigationRoot() {
 				children: __( 'Browse' ),
 			},
 			{
+				path: '/templates',
 				...useLink( {
 					postType: 'wp_template',
 					postId: undefined,
@@ -61,8 +66,6 @@ export default function SidebarNavigationRoot() {
 	const templates = {
 		titleSection: {
 			parentTitle: __( 'Design' ),
-			parentHref:
-				'site-editor.php?postType=wp_template&postId=twentytwentythree//home',
 			title: __( 'Templates' ),
 		},
 		items: [
@@ -71,6 +74,7 @@ export default function SidebarNavigationRoot() {
 					postType: 'wp_template',
 					postId: 'twentytwentythree//index',
 				} ),
+				icon: layout,
 				children: __( 'Index' ),
 			},
 			{
@@ -78,23 +82,56 @@ export default function SidebarNavigationRoot() {
 					postType: 'wp_template',
 					postId: 'twentytwentythree//home',
 				} ),
+				icon: layout,
 				children: __( 'Home' ),
 			},
 		],
 	};
 
-	const currentMenu = templates || root;
-
 	return (
-		<VStack spacing={ 6 }>
-			<div className="edit-site-sidebar-navigation-root__header">
-				<SidebarNavigationTitle { ...currentMenu.titleSection } />
-			</div>
-			<ItemGroup>
-				{ currentMenu.items.map( ( item, index ) => (
-					<SidebarNavigationItem { ...item } key={ index } />
-				) ) }
-			</ItemGroup>
-		</VStack>
+		<NavigatorProvider initialPath="/">
+			<NavigatorScreen path="/">
+				<VStack spacing={ 6 }>
+					<div className="edit-site-sidebar-navigation-root__header">
+						<SidebarNavigationTitle { ...root.titleSection } />
+					</div>
+					<ItemGroup>
+						{ root.items.map( ( item, index ) => {
+							if ( item?.path ) {
+								return (
+									<NavigatorButton
+										as={ SidebarNavigationItem }
+										{ ...item }
+										key={ index }
+									/>
+								);
+							}
+							return (
+								<SidebarNavigationItem
+									{ ...item }
+									key={ index }
+								/>
+							);
+						} ) }
+					</ItemGroup>
+				</VStack>
+			</NavigatorScreen>
+
+			<NavigatorScreen path="/templates">
+				<VStack spacing={ 6 }>
+					<div className="edit-site-sidebar-navigation-root__header">
+						<NavigatorBackButton
+							as={ SidebarNavigationTitle }
+							{ ...templates.titleSection }
+						/>
+					</div>
+					<ItemGroup>
+						{ templates.items.map( ( item, index ) => (
+							<SidebarNavigationItem { ...item } key={ index } />
+						) ) }
+					</ItemGroup>
+				</VStack>
+			</NavigatorScreen>
+		</NavigatorProvider>
 	);
 }
