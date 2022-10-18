@@ -18,7 +18,7 @@ import { useLocation } from '../routes';
 
 export default function SidebarNavigationRoot() {
 	const { params } = useLocation();
-	const menu = {
+	const root = {
 		titleSection: {
 			parentTitle: __( 'Dashboard' ),
 			parentHref: 'index.php',
@@ -58,14 +58,40 @@ export default function SidebarNavigationRoot() {
 			},
 		],
 	};
+	const templates = {
+		titleSection: {
+			parentTitle: __( 'Design' ),
+			parentHref:
+				'site-editor.php?postType=wp_template&postId=twentytwentythree//home',
+			title: __( 'Templates' ),
+		},
+		items: [
+			{
+				...useLink( {
+					postType: 'wp_template',
+					postId: 'twentytwentythree//index',
+				} ),
+				children: __( 'Index' ),
+			},
+			{
+				...useLink( {
+					postType: 'wp_template',
+					postId: 'twentytwentythree//home',
+				} ),
+				children: __( 'Home' ),
+			},
+		],
+	};
+
+	const currentMenu = templates || root;
 
 	return (
 		<VStack spacing={ 6 }>
 			<div className="edit-site-sidebar-navigation-root__header">
-				<SidebarNavigationTitle { ...menu.titleSection } />
+				<SidebarNavigationTitle { ...currentMenu.titleSection } />
 			</div>
 			<ItemGroup>
-				{ menu.items.map( ( item, index ) => (
+				{ currentMenu.items.map( ( item, index ) => (
 					<SidebarNavigationItem { ...item } key={ index } />
 				) ) }
 			</ItemGroup>
