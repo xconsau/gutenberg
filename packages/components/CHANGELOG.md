@@ -2,8 +2,9 @@
 
 ## Unreleased
 
-### Bug Fix 
+### Bug Fix
 -   `FontSizePicker`: Ensure that fluid font size presets appear correctly in the UI controls ([#44791](https://github.com/WordPress/gutenberg/pull/44791))
+-   `useNavigateRegions`: Ensure region navigation picks the next region based on where the current user focus is located instead of starting at the beginning. ([#44883](https://github.com/WordPress/gutenberg/pull/44883))
 
 ## 21.2.0 (2022-10-05)
 
