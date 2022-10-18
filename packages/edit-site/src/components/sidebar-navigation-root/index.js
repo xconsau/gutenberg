@@ -18,58 +18,56 @@ import { useLocation } from '../routes';
 
 export default function SidebarNavigationRoot() {
 	const { params } = useLocation();
-	const browseLink = useLink( {
-		postType: undefined,
-		postId: undefined,
-	} );
-	const templatesLink = useLink( {
-		postType: 'wp_template',
-		postId: undefined,
-	} );
-	const templatePartsLink = useLink( {
-		postType: 'wp_template_part',
-		postId: undefined,
-	} );
+	const menu = {
+		titleSection: {
+			parentTitle: __( 'Dashboard' ),
+			parentHref: 'index.php',
+			title: __( 'Design' ),
+		},
+		items: [
+			{
+				...useLink( {
+					postType: undefined,
+					postId: undefined,
+				} ),
+				icon: globe,
+				'aria-pressed':
+					( ! params.postType && ! params.postId ) ||
+					( !! params.postType && !! params.postId ),
+				children: __( 'Browse' ),
+			},
+			{
+				...useLink( {
+					postType: 'wp_template',
+					postId: undefined,
+				} ),
+				icon: layout,
+				'aria-pressed':
+					params.postType === 'wp_template' && ! params.postId,
+				children: __( 'Templates' ),
+			},
+			{
+				...useLink( {
+					postType: 'wp_template_part',
+					postId: undefined,
+				} ),
+				icon: symbolFilled,
+				'aria-pressed':
+					params.postType === 'wp_template_part' && ! params.postId,
+				children: __( 'Template Parts' ),
+			},
+		],
+	};
 
 	return (
 		<VStack spacing={ 6 }>
 			<div className="edit-site-sidebar-navigation-root__header">
-				<SidebarNavigationTitle
-					parentTitle={ __( 'Dashboard' ) }
-					title={ __( 'Design' ) }
-					parentHref="index.php"
-				/>
+				<SidebarNavigationTitle { ...menu.titleSection } />
 			</div>
 			<ItemGroup>
-				<SidebarNavigationItem
-					{ ...browseLink }
-					icon={ globe }
-					aria-pressed={
-						( ! params.postType && ! params.postId ) ||
-						( !! params.postType && !! params.postId )
-					}
-				>
-					{ __( 'Browse' ) }
-				</SidebarNavigationItem>
-				<SidebarNavigationItem
-					{ ...templatesLink }
-					icon={ layout }
-					aria-pressed={
-						params.postType === 'wp_template' && ! params.postId
-					}
-				>
-					{ __( 'Templates' ) }
-				</SidebarNavigationItem>
-				<SidebarNavigationItem
-					{ ...templatePartsLink }
-					icon={ symbolFilled }
-					aria-pressed={
-						params.postType === 'wp_template_part' &&
-						! params.postId
-					}
-				>
-					{ __( 'Template Parts' ) }
-				</SidebarNavigationItem>
+				{ menu.items.map( ( item, index ) => (
+					<SidebarNavigationItem { ...item } key={ index } />
+				) ) }
 			</ItemGroup>
 		</VStack>
 	);
