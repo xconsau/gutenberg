@@ -6,16 +6,14 @@ import { __experimentalNavigatorProvider as NavigatorProvider } from '@wordpress
 /**
  * Internal dependencies
  */
-import { useLocation } from '../routes';
 import SidebarNavigationScreenMain from './screen-main';
 import SidebarNavigationScreenTemplates from './screen-templates';
 
 export default function SidebarNavigationRoot() {
-	const { params } = useLocation();
 	return (
 		<NavigatorProvider initialPath="/">
-			<SidebarNavigationScreenMain params={ params } />
-			<SidebarNavigationScreenTemplates params={ params } />
+			<SidebarNavigationScreenMain />
+			<SidebarNavigationScreenTemplates />
 		</NavigatorProvider>
 	);
 }

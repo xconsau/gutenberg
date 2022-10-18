@@ -16,8 +16,10 @@ import { globe, layout, symbolFilled } from '@wordpress/icons';
 import { useLink } from '../routes/link';
 import SidebarNavigationTitle from '../sidebar-navigation-title';
 import SidebarNavigationItem from '../sidebar-navigation-item';
+import { useLocation } from '../routes';
 
-export default function ( params ) {
+export default function SidebarNavigationScreenMain() {
+	const { params } = useLocation();
 	const root = {
 		titleSection: {
 			parentTitle: __( 'Dashboard' ),

@@ -16,8 +16,10 @@ import { layout } from '@wordpress/icons';
 import { useLink } from '../routes/link';
 import SidebarNavigationTitle from '../sidebar-navigation-title';
 import SidebarNavigationItem from '../sidebar-navigation-item';
+import { useLocation } from '../routes';
 
-export default function ( params ) {
+export default function SidebarNavigationScreenTemplates() {
+	const { params } = useLocation();
 	const templates = {
 		header: {
 			parentTitle: __( 'Design' ),
