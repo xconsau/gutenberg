@@ -78,6 +78,7 @@ class Timer {
 	}
 
 	humanSpan() {
+		// eslint-disable-next-line @wordpress/no-unused-vars-before-return
 		const [ s, ns ] = process.hrtime( this.start );
 		this.start = process.hrtime();
 
