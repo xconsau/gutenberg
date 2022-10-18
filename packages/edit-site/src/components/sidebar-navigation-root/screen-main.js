@@ -73,6 +73,7 @@ export default function ( params ) {
 								<NavigatorButton
 									as={ SidebarNavigationItem }
 									{ ...item }
+									withChevron={ true }
 									key={ index }
 								/>
 							);
