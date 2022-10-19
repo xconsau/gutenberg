@@ -174,6 +174,29 @@ export function PaddingEdit( props ) {
 
 export function PaddingVisualizer( { clientId, attributes, forceShow } ) {
 	const padding = attributes?.style?.spacing?.padding;
+
+	// Render diagonal stripes to represent spacing.
+	// Leverage blend modes to ensure visibility
+	// over different sets of backgrounds.
+	const stripes = {
+		opacity: '0.8',
+		mixBlendMode: 'color-dodge',
+	};
+	let stripesColor = 'var(--wp-admin-theme-color)';
+
+	// Handle dark contrast.
+	if ( attributes?.isDark ) {
+		stripes.mixBlendMode = 'plus-lighter';
+		stripesColor = 'rgb(255,255,255)';
+	}
+
+	// When the image has preponderance over the
+	// colored overlay.
+	if ( attributes?.url && attributes?.dimRatio <= 50 ) {
+		stripes.mixBlendMode = 'plus-lighter';
+		stripesColor = 'var(--wp-admin-theme-color)';
+	}
+
 	const style = useMemo( () => {
 		return {
 			borderTopWidth: padding?.top
@@ -188,6 +211,8 @@ export function PaddingVisualizer( { clientId, attributes, forceShow } ) {
 			borderLeftWidth: padding?.left
 				? getSpacingPresetCssVar( padding?.left )
 				: 0,
+			backgroundImage: `linear-gradient(135deg, ${ stripesColor } 7.14%, transparent 7.14%, transparent 50%, ${ stripesColor } 50%, ${ stripesColor } 57.14%, transparent 57.14%, transparent 100%)`,
+			...stripes,
 		};
 	}, [ padding ] );
 

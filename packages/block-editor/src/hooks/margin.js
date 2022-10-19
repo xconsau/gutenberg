@@ -29,7 +29,10 @@ import {
 import { cleanEmptyObject } from './utils';
 import BlockPopover from '../components/block-popover';
 import SpacingSizesControl from '../components/spacing-sizes-control';
-import { getSpacingPresetCssVar } from '../components/spacing-sizes-control/utils';
+import {
+	getSpacingPresetSlug,
+	getSpacingPresetCssVar,
+} from '../components/spacing-sizes-control/utils';
 
 /**
  * Determines if there is margin support.
@@ -176,6 +179,15 @@ export function MarginEdit( props ) {
 export function MarginVisualizer( { clientId, attributes, forceShow } ) {
 	const margin = attributes?.style?.spacing?.margin;
 
+	// Render diagonal stripes to represent spacing.
+	// Leverage blend modes to ensure visibility
+	// over different sets of backgrounds.
+	const stripes = {
+		opacity: '0.5',
+		mixBlendMode: 'multiply',
+	};
+	const stripesColor = 'var(--wp-admin-theme-color)';
+
 	const style = useMemo( () => {
 		const marginTop = margin?.top
 			? getSpacingPresetCssVar( margin?.top )
@@ -199,6 +211,8 @@ export function MarginVisualizer( { clientId, attributes, forceShow } ) {
 			right: marginRight ? `calc(${ marginRight } * -1)` : 0,
 			bottom: marginBottom ? `calc(${ marginBottom } * -1)` : 0,
 			left: marginLeft ? `calc(${ marginLeft } * -1)` : 0,
+			backgroundImage: `linear-gradient(135deg, ${ stripesColor } 7.14%, transparent 7.14%, transparent 50%, ${ stripesColor } 50%, ${ stripesColor } 57.14%, transparent 57.14%, transparent 100%)`,
+			...stripes,
 		};
 	}, [ margin ] );
 
@@ -238,24 +252,18 @@ export function MarginVisualizer( { clientId, attributes, forceShow } ) {
 			__unstableRefreshSize={ margin }
 			shift={ false }
 		>
-			<div className="block-editor__padding-visualizer" style={ style } />
+			<div className="block-editor__margin-visualizer" style={ style } />
 			<span
-				className="block-editor__padding-visualizer-label-top"
-				style={ { top: `-${ margin?.top }`, right: '0' } }
+				className="block-editor__margin-visualizer-label-top"
+				style={ { top: style.top, right: '0' } }
 			>
-				{ margin?.top }
+				{ getSpacingPresetSlug( margin?.top ) || margin?.top }
 			</span>
 			<span
-				className="block-editor__padding-visualizer-label-bottom"
-				style={ { bottom: `-${ margin?.bottom }`, right: '0' } }
+				className="block-editor__margin-visualizer-label-bottom"
+				style={ { bottom: style.bottom, right: '0' } }
 			>
-				{ margin?.bottom }
-			</span>
-			<span className="block-editor__padding-visualizer-label-left">
-				{ margin?.left }
-			</span>
-			<span className="block-editor__padding-visualizer-label-right">
-				{ margin?.right }
+				{ getSpacingPresetSlug( margin?.bottom ) || margin?.bottom }
 			</span>
 		</BlockPopover>
 	);
