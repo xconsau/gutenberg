@@ -203,10 +203,10 @@ export function MarginVisualizer( { clientId, attributes, forceShow } ) {
 			: 0;
 
 		return {
-			borderTopWidth: marginTop,
-			borderRightWidth: marginRight,
-			borderBottomWidth: marginBottom,
-			borderLeftWidth: marginLeft,
+			borderTopWidth: marginTop || 0,
+			borderRightWidth: marginRight || 0,
+			borderBottomWidth: marginBottom || 0,
+			borderLeftWidth: marginLeft || 0,
 			top: marginTop ? `calc(${ marginTop } * -1)` : 0,
 			right: marginRight ? `calc(${ marginRight } * -1)` : 0,
 			bottom: marginBottom ? `calc(${ marginBottom } * -1)` : 0,
