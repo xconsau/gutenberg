@@ -31,9 +31,12 @@ use \ReflectionException;
 // phpcs:disable WordPress.NamingConventions.ValidVariableName.VariableNotSnakeCase
 
 /**
- * @internal This class is not covered by the backward compatibility promise for PHPUnit
- *
- * @deprecated see https://github.com/sebastianbergmann/phpunit/issues/4039
+ * This loader enables using test classes like `WP_Block_Test` in
+ * files named like `wp-block-test.php`.
+ * 
+ * It relaxes the PHPUnit 9 requirement of naming the test file after
+ * a class (e.g. `WP_Block_Test.php`) and enables the continued use
+ * of the WordPress naming conventions.
  */
 class FuzzyTestSuiteLoader implements TestSuiteLoader {
 
