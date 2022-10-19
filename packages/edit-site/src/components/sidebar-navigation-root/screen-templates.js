@@ -7,8 +7,10 @@ import {
 	__experimentalNavigatorScreen as NavigatorScreen,
 	__experimentalNavigatorBackButton as NavigatorBackButton,
 } from '@wordpress/components';
+import { useEntityRecords } from '@wordpress/core-data';
 import { __ } from '@wordpress/i18n';
 import { layout } from '@wordpress/icons';
+import { decodeEntities } from '@wordpress/html-entities';
 
 /**
  * Internal dependencies
@@ -18,37 +20,60 @@ import SidebarNavigationTitle from '../sidebar-navigation-title';
 import SidebarNavigationItem from '../sidebar-navigation-item';
 import { useLocation } from '../routes';
 
+const Item = ( { item } ) => {
+	const linkInfo = useLink( item.params );
+	if ( item.params ) {
+		delete item.params;
+		item = {
+			...item,
+			...linkInfo,
+		};
+	}
+	return <SidebarNavigationItem { ...item } />;
+};
+
 export default function SidebarNavigationScreenTemplates() {
 	const { params } = useLocation();
+	const { records: templates, isResolving: isLoading } = useEntityRecords(
+		'postType',
+		'wp_template',
+		{
+			per_page: -1,
+		}
+	);
+
+	let items = [];
+	if ( isLoading ) {
+		items = [
+			{
+				children: __( 'Loading templates' ),
+			},
+		];
+	} else if ( ! templates && ! isLoading ) {
+		items = [
+			{
+				children: __( 'No templates found' ),
+			},
+		];
+	} else {
+		items = templates?.map( ( template ) => ( {
+			params: {
+				postType: 'wp_template',
+				postId: template.id,
+			},
+			icon: layout,
+			children: decodeEntities(
+				template.title?.rendered || template.slug
+			),
+		} ) );
+	}
+
 	const menu = {
 		header: {
 			parentTitle: __( 'Design' ),
 			title: __( 'Templates' ),
 		},
-		items: [
-			{
-				...useLink( {
-					postType: 'wp_template',
-					postId: 'twentytwentythree//index',
-				} ),
-				icon: layout,
-				children: __( 'Index' ),
-				'aria-pressed':
-					params.postType === 'wp_template' &&
-					params.postId === 'twentytwentythree//index',
-			},
-			{
-				...useLink( {
-					postType: 'wp_template',
-					postId: 'twentytwentythree//home',
-				} ),
-				icon: layout,
-				children: __( 'Home' ),
-				'aria-pressed':
-					params.postType === 'wp_template' &&
-					params.postId === 'twentytwentythree//home',
-			},
-		],
+		items,
 		footer: {
 			...useLink( {
 				postType: 'wp_template',
@@ -71,7 +96,7 @@ export default function SidebarNavigationScreenTemplates() {
 				</div>
 				<ItemGroup>
 					{ menu.items.map( ( item, index ) => (
-						<SidebarNavigationItem { ...item } key={ index } />
+						<Item item={ item } key={ index } />
 					) ) }
 				</ItemGroup>
 				<SidebarNavigationItem { ...menu.footer } />
