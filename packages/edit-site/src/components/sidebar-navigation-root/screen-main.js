@@ -20,7 +20,7 @@ import { useLocation } from '../routes';
 
 export default function SidebarNavigationScreenMain() {
 	const { params } = useLocation();
-	const root = {
+	const menu = {
 		titleSection: {
 			parentTitle: __( 'Dashboard' ),
 			parentHref: 'index.php',
@@ -66,10 +66,10 @@ export default function SidebarNavigationScreenMain() {
 		<NavigatorScreen path="/">
 			<VStack spacing={ 6 }>
 				<div className="edit-site-sidebar-navigation-root__header">
-					<SidebarNavigationTitle { ...root.titleSection } />
+					<SidebarNavigationTitle { ...menu.titleSection } />
 				</div>
 				<ItemGroup>
-					{ root.items.map( ( item, index ) => {
+					{ menu.items.map( ( item, index ) => {
 						if ( item?.path ) {
 							return (
 								<NavigatorButton

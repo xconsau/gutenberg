@@ -20,7 +20,7 @@ import { useLocation } from '../routes';
 
 export default function SidebarNavigationScreenTemplates() {
 	const { params } = useLocation();
-	const templates = {
+	const menu = {
 		header: {
 			parentTitle: __( 'Design' ),
 			title: __( 'Templates' ),
@@ -66,15 +66,15 @@ export default function SidebarNavigationScreenTemplates() {
 				<div className="edit-site-sidebar-navigation-root__header">
 					<NavigatorBackButton
 						as={ SidebarNavigationTitle }
-						{ ...templates.header }
+						{ ...menu.header }
 					/>
 				</div>
 				<ItemGroup>
-					{ templates.items.map( ( item, index ) => (
+					{ menu.items.map( ( item, index ) => (
 						<SidebarNavigationItem { ...item } key={ index } />
 					) ) }
 				</ItemGroup>
-				<SidebarNavigationItem { ...templates.footer } />
+				<SidebarNavigationItem { ...menu.footer } />
 			</VStack>
 		</NavigatorScreen>
 	);
