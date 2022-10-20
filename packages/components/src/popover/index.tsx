@@ -180,6 +180,7 @@ const UnforwardedPopover = (
 		flip = true,
 		resize = true,
 		shift = false,
+		variant,
 
 		// Deprecated props
 		__unstableForcePosition,
@@ -189,7 +190,6 @@ const UnforwardedPopover = (
 		getAnchorRect,
 		isAlternate,
 		range,
-		variant,
 
 		// Rest
 		...contentProps
