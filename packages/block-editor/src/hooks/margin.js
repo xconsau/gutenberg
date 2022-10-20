@@ -30,8 +30,8 @@ import { cleanEmptyObject } from './utils';
 import BlockPopover from '../components/block-popover';
 import SpacingSizesControl from '../components/spacing-sizes-control';
 import {
-	getSpacingPresetSlug,
 	getSpacingPresetCssVar,
+	getNameFromPresetVar,
 } from '../components/spacing-sizes-control/utils';
 
 /**
@@ -177,6 +177,7 @@ export function MarginEdit( props ) {
 }
 
 export function MarginVisualizer( { clientId, attributes, forceShow } ) {
+	const spacingSizes = useSetting( 'spacing.spacingSizes' );
 	const margin = attributes?.style?.spacing?.margin;
 
 	// Render diagonal stripes to represent spacing.
@@ -253,18 +254,24 @@ export function MarginVisualizer( { clientId, attributes, forceShow } ) {
 			shift={ false }
 		>
 			<div className="block-editor__margin-visualizer" style={ style } />
-			<span
-				className="block-editor__margin-visualizer-label-top"
-				style={ { top: style.top, right: '0' } }
-			>
-				{ getSpacingPresetSlug( margin?.top ) || margin?.top }
-			</span>
-			<span
-				className="block-editor__margin-visualizer-label-bottom"
-				style={ { bottom: style.bottom, right: '0' } }
-			>
-				{ getSpacingPresetSlug( margin?.bottom ) || margin?.bottom }
-			</span>
+			{ margin?.top && (
+				<span
+					className="block-editor__margin-visualizer-label-top"
+					style={ { top: style.top, right: '0' } }
+				>
+					{ getNameFromPresetVar( margin?.top, spacingSizes ) ||
+						margin?.top }
+				</span>
+			) }
+			{ margin?.bottom && (
+				<span
+					className="block-editor__margin-visualizer-label-bottom"
+					style={ { bottom: style.bottom, right: '0' } }
+				>
+					{ getNameFromPresetVar( margin?.bottom, spacingSizes ) ||
+						margin?.bottom }
+				</span>
+			) }
 		</BlockPopover>
 	);
 }
