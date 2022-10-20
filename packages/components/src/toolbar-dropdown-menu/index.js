@@ -26,7 +26,7 @@ function ToolbarDropdownMenu( props, ref ) {
 				<DropdownMenu
 					{ ...props }
 					popoverProps={ {
-						isAlternate: true,
+						variant: 'alternate',
 						...props.popoverProps,
 					} }
 					toggleProps={ toolbarItemProps }

@@ -41,7 +41,7 @@ const noop = () => {};
 const POPOVER_PROPS = {
 	className: 'block-editor-block-settings-menu__popover',
 	position: 'bottom right',
-	isAlternate: true,
+	variant: 'alternate',
 };
 
 function CopyMenuItem( { blocks, onCopy } ) {
