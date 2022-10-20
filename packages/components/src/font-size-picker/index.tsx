@@ -46,7 +46,6 @@ import {
 	ResetButton,
 } from './styles';
 import { Spacer } from '../spacer';
-import { FontSizeOption } from './types';
 
 // This conditional is needed to maintain the spacing before the slider in the `withSlider` case.
 const MaybeVStack = ( {
