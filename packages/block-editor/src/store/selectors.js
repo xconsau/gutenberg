@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { map, reduce, some, find, filter, orderBy } from 'lodash';
+import { map, reduce, some, find, filter } from 'lodash';
 import createSelector from 'rememo';
 
 /**
@@ -27,6 +27,7 @@ import deprecated from '@wordpress/deprecated';
  * Internal dependencies
  */
 import { mapRichTextSettings } from './utils';
+import { orderBy } from '../utils/sorting';
 
 /**
  * A block selection object.
