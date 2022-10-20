@@ -138,6 +138,7 @@ module.exports = {
 							'nth',
 							'omitBy',
 							'once',
+							'orderBy',
 							'overEvery',
 							'partial',
 							'partialRight',
