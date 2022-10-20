@@ -33,6 +33,7 @@ $arrow-triangle-base-size: 14px;
 	.is-unstyled & {
 		background: none;
 		border: none;
+		border-radius: 0;
 		outline: none;
 		box-shadow: none;
 	}
