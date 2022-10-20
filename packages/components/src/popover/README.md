@@ -171,6 +171,8 @@ Used to customize the header text shown when the popover is toggled to fullscree
 
 ### `isAlternate`: `boolean`
 
+_Note: this prop is deprecated and will be removed in WordPress 6.4. Please use the `variant` prop with the `'alternate'` values instead._
+
 Used to enable a different visual style for the popover.
 
 -   Required: No
@@ -226,5 +228,16 @@ Adjusts the size of the popover to prevent its contents from going out of view w
 ### `range`: `unknown`
 
 _Note: this prop is deprecated and will be removed in WordPress 6.3. It has no effect on the component._
+
+-   Required: No
+
+### `variant`: `'alternate' | 'unstyled'`
+
+Specifies the popover's style.
+
+Leave undefined for the default style. Possible values are:
+-   `unstyled`:  The popover is essentially without any visible style, it has no background, border, outline or drop shadow, but the popover contents are still displayed.
+-   `alternate`: A style that has no elevation, but a high contrast with other elements.
+
 
 -   Required: No
