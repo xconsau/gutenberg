@@ -190,4 +190,14 @@ export type PopoverProps = {
 	 * @deprecated
 	 */
 	range?: unknown;
+	/**
+	 * Specifies the popover's style.
+	 *
+	 * Leave undefined for the default style. Other values are:
+	 * - 'frameless': The popover is essentially without any visible style, it
+	 *                has no background, border, outline or drop shadow.
+	 * - 'alternate': A style that has no elevation, but a high contrast with
+	 *                other elements.
+	 */
+	variant?: 'frameless' | 'alternate';
 };

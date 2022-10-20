@@ -169,7 +169,6 @@ const UnforwardedPopover = (
 		children,
 		className,
 		noArrow = true,
-		isAlternate,
 		position,
 		placement: placementProp = 'bottom-start',
 		offset: offsetProp = 0,
@@ -188,7 +187,9 @@ const UnforwardedPopover = (
 		anchorRef,
 		anchorRect,
 		getAnchorRect,
+		isAlternate,
 		range,
+		variant,
 
 		// Rest
 		...contentProps
@@ -204,7 +205,7 @@ const UnforwardedPopover = (
 	let computedFlipProp = flip;
 	let computedResizeProp = resize;
 	if ( __unstableForcePosition !== undefined ) {
-		deprecated( '`__unstableForcePosition` prop wp.components.Popover', {
+		deprecated( '`__unstableForcePosition` prop in wp.components.Popover', {
 			since: '6.1',
 			version: '6.3',
 			alternative: '`flip={ false }` and  `resize={ false }`',
@@ -250,6 +251,17 @@ const UnforwardedPopover = (
 			version: '6.3',
 			alternative: '`anchor` prop',
 		} );
+	}
+
+	let computedVariant = variant;
+	if ( isAlternate !== undefined ) {
+		deprecated( '`isAlternate` prop in wp.components.Popover', {
+			since: '6.2',
+			version: '6.4',
+			alternative: '`variant` prop with the `alternate` value',
+		} );
+
+		computedVariant = isAlternate ? 'alternate' : computedVariant;
 	}
 
 	const arrowRef = useRef( null );
@@ -476,7 +488,7 @@ const UnforwardedPopover = (
 			placement={ computedPlacement }
 			className={ classnames( 'components-popover', className, {
 				'is-expanded': isExpanded,
-				'is-alternate': isAlternate,
+				[ `is-${ computedVariant }` ]: !! computedVariant,
 			} ) }
 			{ ...contentProps }
 			ref={ mergedFloatingRef }
