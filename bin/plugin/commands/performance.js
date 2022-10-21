@@ -215,6 +215,7 @@ async function runPerformanceTests( branches, options ) {
 	log( '\n>> Preparing the tests directories' );
 	log( '    >> Cloning the repository' );
 	const baseDirectory = getRandomTemporaryPath();
+	runShellScript( 'mkdir -p ' + baseDirectory );
 
 	await SimpleGit( baseDirectory )
 		.raw( 'init' )
