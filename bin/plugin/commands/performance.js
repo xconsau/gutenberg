@@ -4,6 +4,7 @@
 const fs = require( 'fs' );
 const path = require( 'path' );
 const { mapValues, kebabCase } = require( 'lodash' );
+const SimpleGit = require( 'simple-git' );
 
 /**
  * Internal dependencies
@@ -16,7 +17,6 @@ const {
 	getRandomTemporaryPath,
 } = require( '../lib/utils' );
 const git = require( '../lib/git' );
-const config = require( '../config' );
 
 /**
  * @typedef WPPerformanceCommandOptions
@@ -212,7 +212,14 @@ async function runPerformanceTests( branches, options ) {
 	// 1- Preparing the tests directory.
 	log( '\n>> Preparing the tests directories' );
 	log( '    >> Cloning the repository' );
-	const baseDirectory = await git.clone( config.gitRepositoryURL );
+	const baseDirectory = getRandomTemporaryPath();
+
+	await SimpleGit( baseDirectory )
+		.raw( 'init' )
+		.raw( 'remove', 'add', 'origin', process.env.GITHUB_WORKSPACE )
+		.raw( 'fetch', '--depth=2', 'origin', process.env.GITHUB_REF )
+		.raw( 'checkout', process.env.GITHUB_SHA );
+
 	const rootDirectory = getRandomTemporaryPath();
 	const performanceTestDirectory = rootDirectory + '/tests';
 	await runShellScript( 'mkdir -p ' + rootDirectory );
