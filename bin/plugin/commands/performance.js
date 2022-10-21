@@ -22,6 +22,8 @@ const git = require( '../lib/git' );
  * @typedef WPPerformanceCommandOptions
  *
  * @property {boolean=} ci          Run on CI.
+ * @property {string=}  clonePath   Path where repo is cloned.
+ * @property {string=}  mergeRef    Git ref of merge commit.
  * @property {string=}  testsBranch The branch whose performance test files will be used for testing.
  * @property {string=}  wpVersion   The WordPress version to be used as the base install for testing.
  */
@@ -216,9 +218,9 @@ async function runPerformanceTests( branches, options ) {
 
 	await SimpleGit( baseDirectory )
 		.raw( 'init' )
-		.raw( 'remove', 'add', 'origin', process.env.GITHUB_WORKSPACE )
-		.raw( 'fetch', '--depth=2', 'origin', process.env.GITHUB_REF )
-		.raw( 'checkout', process.env.GITHUB_SHA );
+		.raw( 'remove', 'add', 'origin', options.clonePath )
+		.raw( 'fetch', '--depth=2', 'origin', options.mergeRef )
+		.raw( 'checkout', options.testsBranch );
 
 	const rootDirectory = getRandomTemporaryPath();
 	const performanceTestDirectory = rootDirectory + '/tests';

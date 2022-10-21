@@ -94,6 +94,8 @@ program
 	.command( 'performance-tests [branches...]' )
 	.alias( 'perf' )
 	.option( ...ciOption )
+	.option( '--clone-path <path>', 'File path where repo is cloned' )
+	.option( '--merge-ref <ref>', 'Git ref of merge-commit' )
 	.option(
 		'--tests-branch <branch>',
 		"Use this branch's performance test files"
