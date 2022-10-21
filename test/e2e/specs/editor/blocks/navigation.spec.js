@@ -47,3 +47,38 @@ test.describe(
 		test( 'default to the only existing classic menu if there are no block menus', async () => {} );
 	}
 );
+
+test.describe(
+	'As a user I want to see a warning if the menu referenced by a navigation block is not available',
+	() => {
+		test.beforeEach( async ( { admin } ) => {
+			await admin.createNewPost();
+		} );
+
+		test( 'warning message shows when given an unknown ref', async ( {
+			editor,
+		} ) => {
+			await editor.insertBlock( {
+				name: 'core/navigation',
+				attributes: {
+					ref: 1,
+				},
+			} );
+
+			// Check the markup of the block is correct.
+			await editor.publishPost();
+			const content = await editor.getEditedPostContent();
+			expect( content ).toBe( `<!-- wp:navigation {"ref":1} /-->` );
+
+			// Find the warning message
+			const warningMessage = await editor.page.locator(
+				'class=wp-navigation-block',
+				{
+					hasText:
+						'Navigation menu has been deleted or is unavailable.',
+				}
+			);
+			expect( warningMessage ).toBeTruthy();
+		} );
+	}
+);
