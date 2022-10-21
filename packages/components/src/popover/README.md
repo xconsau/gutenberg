@@ -216,6 +216,7 @@ Possible values:
 - `corner`: `'top' | 'right' | 'bottom' | 'left'`
 
 
+
 -   Required: No
 
 ### `resize`: `boolean`
@@ -236,8 +237,9 @@ _Note: this prop is deprecated and will be removed in WordPress 6.3. It has no e
 Specifies the popover's style.
 
 Leave undefined for the default style. Possible values are:
--   `unstyled`:  The popover is essentially without any visible style, it has no background, border, outline or drop shadow, but the popover contents are still displayed.
 -   `alternate`: A style that has no elevation, but a high contrast with other elements.
+-   `unstyled`:  The popover is essentially without any visible style, it has no background, border, outline or drop shadow, but the popover contents are still displayed.
+
 
 
 -   Required: No

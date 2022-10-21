@@ -143,6 +143,8 @@ export type PopoverProps = {
 	 *                the popover contents are still displayed.
 	 * - 'alternate': A style that has no elevation, but a high contrast with
 	 *                other elements.
+	 *
+	 * @default undefined
 	 */
 	variant?: 'unstyled' | 'alternate';
 	// Deprecated props
@@ -192,6 +194,8 @@ export type PopoverProps = {
 	) => DomRectWithOwnerDocument;
 	/**
 	 * Used to enable a different visual style for the popover.
+	 * _Note: this prop is deprecated. Use the `variant` prop with the
+	 * 'alternate' value instead._
 	 *
 	 * @deprecated
 	 */
